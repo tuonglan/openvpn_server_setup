@@ -9,6 +9,8 @@ fi
 # Init the values
 VPN_NAME=${VPN_NAME:-ovpn_server}
 VPN_SUBNET=${VPN_SUBNET:-10.8.52.0}
+VPN_ADDRESS=${VPN_ADDRESS:-lando.com}
+VPN_PORT=${VPN_PORT:-11194}
 
 # Make the directoriesa
 echo "Making the directories & files"
@@ -29,9 +31,12 @@ openvpn --genkey --secret ${DIR}/server/ta.key
 
 # Finalize the data
 echo "Finalize the data"
-cp data/base.conf ${DIR}/clients/configs/
 cp ${DIR}/pki/dh.pem ${DIR}/server/
 cp ${DIR}/pki/ca.crt ${DIR}/server/
+
+cp data/base.conf ${DIR}/clients/configs/
+sed -i "s|<%=vpn_address%>|${VPN_ADDRESS}|g" ${DIR}/clients/configs/base.conf
+sed -i "s|<%=vpn_port%>|${VPN_PORT}|g" ${DIR}/clients/configs/base.conf
 
 cp data/make_client_config.sh ${DIR}/
 sed -i "s|<%=installation_dir%>|${DIR}|g" ${DIR}/make_client_config.sh
