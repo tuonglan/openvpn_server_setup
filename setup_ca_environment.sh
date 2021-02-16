@@ -8,7 +8,7 @@ fi
 
 # Init the values
 VPN_NAME=${VPN_NAME:-ovpn_server}
-VPN_SUBNET=${VPN_SUBNET:-10.8.52.0}
+VPN_SUBNET=${VPN_SUBNET:-10.5.53.0}
 VPN_ADDRESS=${VPN_ADDRESS:-lando.com}
 VPN_PORT=${VPN_PORT:-11194}
 
@@ -33,6 +33,8 @@ openvpn --genkey --secret ${DIR}/server/ta.key
 echo "Finalize the data"
 cp ${DIR}/pki/dh.pem ${DIR}/server/
 cp ${DIR}/pki/ca.crt ${DIR}/server/
+cp ${DIR}/pki/issued/${VPN_NAME}.crt ${DIR}/server/
+cp ${DIR}/pki/private/${VPN_NAME}.key ${DIR}/server/
 
 cp data/base.conf ${DIR}/clients/configs/
 sed -i "s|<%=vpn_address%>|${VPN_ADDRESS}|g" ${DIR}/clients/configs/base.conf
