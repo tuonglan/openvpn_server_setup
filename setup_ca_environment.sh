@@ -51,6 +51,7 @@ cp ${DIR}/pki/private/${VPN_NAME}.key ${DIR}/server/
 cp data/base.conf ${DIR}/clients/configs/
 sed -i "s|<%=vpn_address%>|${VPN_ADDRESS}|g" ${DIR}/clients/configs/base.conf
 sed -i "s|<%=vpn_port%>|${VPN_PORT}|g" ${DIR}/clients/configs/base.conf
+sed -i "s|<%=vpn_subnet%>|${VPN_SUBNET}|g" ${DIR}/clients/configs/base.conf
 
 cp data/make_client_config.sh ${DIR}/
 sed -i "s|<%=installation_dir%>|${DIR}|g" ${DIR}/make_client_config.sh
