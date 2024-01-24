@@ -55,8 +55,11 @@ sed -i "s|<%=vpn_address%>|${VPN_ADDRESS}|g" ${DIR}/clients/configs/base.conf
 sed -i "s|<%=vpn_port%>|${VPN_PORT}|g" ${DIR}/clients/configs/base.conf
 sed -i "s|<%=vpn_subnet%>|${VPN_SUBNET}|g" ${DIR}/clients/configs/base.conf
 
+# Create config files
 cp data/client_config.sh ${DIR}/
 sed -i "s|<%=installation_dir%>|${DIR}|g" ${DIR}/client_config.sh
+cp data/server_config.sh ${DIR}/
+sed -i "s|<%=vpn_name%>|${VPN_NAME}|g" ${DIR}/server_config.sh
 
 #cp data/server.conf ${DIR}/server/${VPN_NAME}.conf
 #sed -i "s|<%=vpn_name%>|${VPN_NAME}|g" ${DIR}/server/${VPN_NAME}.conf
