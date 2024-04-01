@@ -8,8 +8,8 @@ KEY_DIR=${INSTALLATION_DIR}/clients/keys
 CONF_DIR=${INSTALLATION_DIR}/clients/configs
 
 # Check command
-if [ "$1" != "make" ] && [ "$1" != "renew" ]; then
-   echo "The command (1st argument must be one of [make, renew]"
+if [ "$1" != "make" ] && [ "$1" != "renew" ] && [ "$1" != "revoke" ]; then
+   echo "The command (1st argument must be one of [make, renew, revoke]"
    exit -1
 fi
 
@@ -34,6 +34,9 @@ if [ "$CMD" == "make" ]; then
     easyrsa build-client-full $CLIENT nopass
 elif [ "$CMD" == "renew" ]; then
     easyrsa renew $CLIENT nopass
+elif [ "$CMD" == "revoke" ]; then
+    easyrsa revoke $CLIENT
+    exit 0
 else
     echo "Invalid command ${CMD}"
     exit -1
