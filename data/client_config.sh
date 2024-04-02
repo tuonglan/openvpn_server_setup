@@ -58,6 +58,7 @@ elif [ "$CMD" == "revoke" ]; then
     # Update crl (certificate revocation list)
     easyrsa gen-crl
     cp ${EASYRSA_PKI}/crl.pem ${INSTALLATION_DIR}/server/crl/
+    echo "Certificates revocation list updated (pki/crl.pem)"
 
     exit 0
 else
