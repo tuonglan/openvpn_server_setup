@@ -60,6 +60,10 @@ elif [ "$CMD" == "revoke" ]; then
     cp ${EASYRSA_PKI}/crl.pem ${INSTALLATION_DIR}/server/crl/
     echo "Certificates revocation list updated (pki/crl.pem)"
 
+    # Move the revoked one to revoked directory
+    mkdir -p ${CONF_DIR}/revoked
+    mv ${CONF_DIR}/${CLIENT}.ovpn ${CONF_DIR}/revoked/
+
     exit 0
 else
     echo "Invalid command ${CMD}"
