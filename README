@@ -1,0 +1,4 @@
+# Some note
+Subnet 10.255.x.x = Subnet type
+Subnet 10.5.x.x = Private server
+Subnet 10.6.x.x = Public server
