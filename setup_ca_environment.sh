@@ -29,7 +29,7 @@ export VPN_IP_POOL_END=${VPN_SUBNET_PREFIX}.255
 # Make the directoriesa
 echo "Making the directories & files"
 DIR=$1
-mkdir -p ${DIR}/server ${DIR}/server/ccd ${DIR}/pki ${DIR}/clients/configs ${DIR}/clients/keys
+mkdir -p ${DIR}/server ${DIR}/server/ccd ${DIR}/server/crl ${DIR}/pki ${DIR}/clients/configs ${DIR}/clients/keys
 
 # Init the PKI
 echo "Init the PKI"
@@ -41,7 +41,7 @@ easyrsa build-ca nopass
 echo "Generate the server certificate"
 easyrsa build-server-full $VPN_NAME nopass
 easyrsa gen-dh
-openvpn --genkey --secret ${DIR}/server/ta.key
+openvpn --genkey secret ${DIR}/server/ta.key
 
 # Finalize the data
 echo "Finalize the data"

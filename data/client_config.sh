@@ -2,6 +2,17 @@
 
 set -e
 
+# Configure the tempfile & cleanup
+#REVOKE_OUTPUT_FILE=""
+#cleanup() {
+#    # Delete temp file
+#    if [ ! -z $REVOKE_OUTPUT_FILE ]; then
+#        rm -rf $REVOKE_OUTPUT_FILE
+#        echo "Temporary file $REVOKE_OUTPUT_FILE deleted"
+#    fi
+#}
+#trap cleanup EXIT
+
 # Get the location of the script
 INSTALLATION_DIR=<%=installation_dir%>
 KEY_DIR=${INSTALLATION_DIR}/clients/keys
@@ -35,7 +46,19 @@ if [ "$CMD" == "make" ]; then
 elif [ "$CMD" == "renew" ]; then
     easyrsa renew $CLIENT nopass
 elif [ "$CMD" == "revoke" ]; then
-    easyrsa revoke $CLIENT
+    # Revoke and get serial number
+#    REVOKE_OUTPUT_FILE=$(mktemp)
+#    easyrsa revoke $CLIENT | tee $REVOKE_OUTPUT_FILE
+#
+#    # Copy revoked serial to the server
+#    revoked_serial=$(grep -oP 'serial-number: \K\w+' $REVOKE_OUTPUT_FILE)
+#    cp ${EASYRSA_PKI}/revoked/certs_by_serial/$revoked_serial.crt ${INSTALLATION_DIR}/server/crl/
+    easyrsa revoke $CLIENT    # Revoke certificate
+    
+    # Update crl (certificate revocation list)
+    easyrsa gen-crl
+    cp ${EASYRSA_PKI}/crl.pem ${INSTALLATION_DIR}/server/crl/
+
     exit 0
 else
     echo "Invalid command ${CMD}"
