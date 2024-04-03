@@ -42,6 +42,7 @@ echo "Generate the server certificate"
 easyrsa build-server-full $VPN_NAME nopass
 easyrsa gen-dh
 openvpn --genkey secret ${DIR}/server/ta.key
+easyrsa gen-crl
 
 # Finalize the data
 echo "Finalize the data"
@@ -49,6 +50,10 @@ cp ${DIR}/pki/dh.pem ${DIR}/server/
 cp ${DIR}/pki/ca.crt ${DIR}/server/
 cp ${DIR}/pki/issued/${VPN_NAME}.crt ${DIR}/server/
 cp ${DIR}/pki/private/${VPN_NAME}.key ${DIR}/server/
+cp ${EASYRSA_PKI}/crl.pem ${DIR}/server/crl/
+
+echo "Updating crl.pem, will need root permission to change ownership to 'nobody'"
+sudo chown nobody ${DIR}/server/crl/crl.pem
 
 cp data/base.conf ${DIR}/clients/configs/
 sed -i "s|<%=vpn_address%>|${VPN_ADDRESS}|g" ${DIR}/clients/configs/base.conf

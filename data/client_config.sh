@@ -57,7 +57,9 @@ elif [ "$CMD" == "revoke" ]; then
     
     # Update crl (certificate revocation list)
     easyrsa gen-crl
-    cp ${EASYRSA_PKI}/crl.pem ${INSTALLATION_DIR}/server/crl/
+    echo "Updating crl.pem, will need root permission to change ownership to 'nobody'"
+    sudo cp ${EASYRSA_PKI}/crl.pem ${INSTALLATION_DIR}/server/crl/
+    sudo chown nobody ${INSTALLATION_DIR}/server/crl/crl.pem
     echo "Certificates revocation list updated (pki/crl.pem)"
 
     # Move the revoked one to revoked directory
