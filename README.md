@@ -19,10 +19,11 @@ Ex: mkdir /etc/openvpn/seoul_rasp4
 
 ## Generate the configurations
 Run command: ./setup_ca_environment.sh <config dir> <type>
-Ex: ./setup_ca_environment.sh /etc/openvpn/seoul_rasp4 subnet
+Ex: `./setup_ca_environment.sh /etc/openvpn/seoul_rasp4 subnet`
 
 ## Start the openvpn server container
 Ex:
+```
     rasp4-bmt-subnet54:
         image: <openvpn Docker image>
         hostname: "seoul-raps4"
@@ -44,35 +45,36 @@ Ex:
                 max-size: "5m"
                 max-file: 10
         command: "./start-openvpn-server.sh seoul_rasp4.conf"
+```
 
 
 # Openvpn Certifications Management
 Move to the directory created by setup_ca_environment.sh above
 Ex:
-  cd /etc/openvpn/seoul_raps4
+  `cd /etc/openvpn/seoul_raps4`
 
 ## Generate clients' configurations
 Ex:
-  ./client_config.sh make lando
+  `./client_config.sh make lando`
 
 The openvpn config file will be created in clients/configs/lando.ovpn
 Copy the file to mobile device or run command "openvpn --config <ovpn file>" and tada.
 
 ## Renew clients' configurations
 Ex:
-  ./client_config.sh review lando
+  `./client_config.sh review lando`
 
 Review actual creates ovpn file so update the file in other device is necessary.
 
 ## Revoke client's configurations
 Ex:
-  ./client_config.sh revoke lando
+  `./client_config.sh revoke lando`
 
 ## Renew server's certificate
 Usually after 2 years the server's certificate will be expired.
 The renewal will generate new certificate using the same CA
 Ex:
-  ./server_config.sh renew
+  `./server_config.sh renew`
   
 After renewal, restart the docker container for new certificate being effective.
 
