@@ -24,8 +24,12 @@ export VPN_SERVER_IMAGE=${VPN_SERVER_IMAGE}
 export VPN_TYPE=$2
 export VPN_SUBNET=${VPN_SUBNET_PREFIX}.0
 export VPN_SUBNET_GATEWAY=${VPN_SUBNET_PREFIX}.1
-export VPN_IP_POOL_START=${VPN_SUBNET_PREFIX}.11
+export VPN_IP_POOL_START=${VPN_SUBNET_PREFIX}.31
 export VPN_IP_POOL_END=${VPN_SUBNET_PREFIX}.255
+
+# Configurations
+export EASYRSA_CERT_EXPIRE=${EASYRSA_CERT_EXPIRE:-365}	# Days
+export EASYRSA_CRL_DAYS=${EASYRSA_CRL_DAYS:-730}	# Days
 
 USER_ID=$(id -u $USER)
 GROUP_ID=$(id -g $USER)
@@ -70,11 +74,16 @@ sed -i "s|<%=vpn_address%>|${VPN_ADDRESS}|g" ${DIR}/clients/configs/base.conf
 sed -i "s|<%=vpn_port%>|${VPN_PORT}|g" ${DIR}/clients/configs/base.conf
 sed -i "s|<%=vpn_subnet%>|${VPN_SUBNET}|g" ${DIR}/clients/configs/base.conf
 
-# Create config files
+# Create config generators
 cp data/client_config.sh ${DIR}/
 sed -i "s|<%=installation_dir%>|${DIR}|g" ${DIR}/client_config.sh
+sed -i "s|<%=default_client_expiration%>|${EASYRSA_CERT_EXPIRE}|g" ${DIR}/client_config.sh
+sed -i "s|<%=default_crl_expiration%>|${EASYRSA_CRL_DAYS}|g" ${DIR}/client_config.sh
+
 cp data/server_config.sh ${DIR}/
 sed -i "s|<%=vpn_name%>|${VPN_NAME}|g" ${DIR}/server_config.sh
+sed -i "s|<%=default_server_cert_expiration%>|${EASYRSA_CERT_EXPIRE}|g" ${DIR}/server_config.sh
+sed -i "s|<%=default_crl_expiration%>|${EASYRSA_CRL_DAYS}|g" ${DIR}/server_config.sh
 
 #cp data/server.conf ${DIR}/server/${VPN_NAME}.conf
 #sed -i "s|<%=vpn_name%>|${VPN_NAME}|g" ${DIR}/server/${VPN_NAME}.conf

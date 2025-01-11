@@ -32,6 +32,11 @@ fi
 
 CMD=${1}
 CLIENT=${2}
+EXPIRATION=${3}
+
+# Set expiration
+export EASYRSA_CERT_EXPIRE=${EXPIRATION:-${EASYRSA_CERT_EXPIRE:-<%=default_client_expiration%>}}
+export EASYRSA_CRL_DAYS=${EASYRSA_CRL_DAYS:-<%=default_crl_expiration%>}
 
 # Set CN name & ey name
 export EASYRSA_PKI=${INSTALLATION_DIR}/pki
